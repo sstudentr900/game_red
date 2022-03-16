@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Microsoft JhengHei, STHeiti, sans-serif;
+            font-size: 62.5%;
+        }
+        
+        .game {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: black;
+            /* 不能選取 */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        #main {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: url(https://i.imgur.com/Sm8smA4.jpg);
+            background-position: top;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        @media (min-width: 1200px) {
+            #main {
+                background: url(https://i.imgur.com/Sm8smA4.jpg);
+                background-repeat: repeat-x;
+                background-size: contain;
+                background-position: center;
+            }
+        }
+        
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, .6);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9;
+            /* display: none; */
+        }
+        
+        .cover h3 {
+            font-size: 46px;
+            color: #fff;
+            margin: 0 0 20px;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .cover h2 {
+            font-size: 120px;
+            color: #F0B42D;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+            line-height: 1;
+        }
+        
+        .cover h5 {
+            width: 30px;
+            font-size: 30px;
+            color: #fff;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .cover .flex {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+        }
+        
+        .cover .btn {
+            display: block;
+        }
+        
+        .cover .ranking {
+            margin-top: 10px
+        }
+        
+        .cover .home_btn {
+            margin-top: 60px;
+        }
+        
+        .cover .btn img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .load h3 {
+            font-size: 32px;
+        }
+        
+        .cover .load h5 {
+            font-size: 18px;
+        }
+        
+        .start,
+        .over {
+            display: none;
+        }
+        
+        .over {
+            background: url('https://i.imgur.com/t0gq4RT.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding: 190px 110px 0;
+            margin-top: -8%;
+        }
+        
+        .scoring {
+            display: flex;
+            min-width: 190px;
+            justify-content: center;
+        }
+        /* .scoring>h5 {
+            width: 20px;
+        } */
+        
+        .scoring h2 {
+            line-height: 0.8;
+            letter-spacing: -3px;
+            font-size: 180px;
+            min-width: 300px;
+        }
+        
+        .interface {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            opacity: 0;
+        }
+        
+        .interface .star {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            background: #fff;
+            z-index: 1;
+            /* position: absolute; */
+        }
+        
+        .interface .star img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .interface .allScore {
+            padding: 8px 16px;
+            width: 110px;
+            margin-left: -35px;
+            background: #4185D1;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+            border: 4px solid #fff;
+            margin-top: 6px;
+        }
+        
+        .interface .allScore h4 {
+            font-size: 36px;
+            color: #fff;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
+            text-align: right;
+        }
+        
+        .interface .time {
+            width: 115px;
+            background: #fff;
+            border: 3px solid #fff;
+            border-radius: 10px;
+            margin-left: -35px;
+            margin-top: -4px;
+        }
+        
+        .interface .bar {
+            background: #E05C5C;
+            width: 100%;
+            height: 10px;
+            border-radius: 10px;
+        }
+        
+        .effects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            box-shadow: inset 0 0 40px 0 red;
+            pointer-events: none;
+            animation: opacity .3s ease-in-out infinite;
+            display: none;
+        }
+        
+        @keyframes opacity {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+        
+        .role {
+            position: absolute;
+            width: 252px;
+            height: 252px;
+            background: url('https://i.imgur.com/AsWTbEJ.png');
+            background-repeat: no-repeat;
+            /* background-size: 1260px 180px; */
+            background-size: 1764px 252px;
+            top: -252px;
+            cursor: pointer;
+        }
+        
+        .role p {
+            font-size: 18px;
+            font-weight: bold;
+            position: absolute;
+            top: -22px;
+            margin: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            display: none;
+        }
+        
+        .items {
+            /* width: 100vw;
+            height: 100vh; */
+            position: relative;
+        }
+        
+        .item {
+            position: absolute;
+            width: 55px;
+            height: 75px;
+        }
+        
+        .item .text {
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            position: absolute;
+            top: -6px;
+            width: 100%;
+            text-align: center;
+            display: none;
+        }
+        
+        .prompt {
+            display: none;
+        }
+        
+        .prompt .left,
+        .prompt .right {
+            position: absolute;
+            bottom: 10%;
+            left: calc(50% - 200px);
+        }
+        
+        .prompt .right {
+            left: auto;
+            right: calc(50% - 200px);
+            transform: translate(0, 40px) rotate(180deg);
+        }
+        
+        .prompt .array {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-left: 10px solid rgba(255, 255, 255, 0.7);
+            border-bottom: 10px solid rgba(255, 255, 255, 0.7);
+            animation: arrows 3s linear infinite;
+            opacity: 0;
+        }
+        
+        .prompt .array:nth-child(1) {
+            animation-delay: -3s;
+        }
+        
+        .prompt .array:nth-child(2) {
+            animation-delay: -2s
+        }
+        
+        .prompt .array:nth-child(3) {
+            animation-delay: -1s;
+        }
+        
+        .home .button,
+        .home .logo {
+            position: absolute;
+            transform: translate(-50%);
+            transition: 1s ease-in-out;
+        }
+        
+        .home .logo {
+            left: 50%;
+            top: -100%;
+        }
+        
+        .home .button {
+            left: -100%;
+        }
+        
+        .home.active .logo {
+            top: 10%;
+        }
+        
+        .home.active .button {
+            left: 50%;
+        }
+        
+        .home .logo img {
+            width: 50vw;
+            max-width: 580px;
+            min-width: 280px;
+        }
+        
+        .home .button {
+            top: auto;
+            bottom: 12%;
+            cursor: pointer;
+        }
+        
+        .home .button img {
+            max-width: 300px;
+            width: 50vw;
+            min-width: 200px;
+        }
+        
+        @keyframes arrows {
+            0% {
+                opacity: 0;
+                transform: translate(50px, 0)rotate(45deg);
+            }
+            10%,
+            90% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.7;
+                transform: translate(0, 0)rotate(45deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50px, 0)rotate(45deg);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .interface {
+                top: 15px;
+                left: 15px;
+                transform: scale(.6);
+                transform-origin: top left;
+            }
+            .role {
+                width: 120px;
+                height: 120px;
+                background-size: 840px 120px;
+            }
+            .prompt .left {
+                left: calc(50% - 130px);
+            }
+            .prompt .right {
+                right: calc(50% - 130px);
+            }
+            .over {
+                padding: 110px 60px 0;
+            }
+            .scoring h2 {
+                font-size: 80px;
+                min-width: 130px;
+            }
+            .cover .home_btn {
+                margin-top: 45px;
+            }
+            .cover h5 {
+                font-size: 20px;
+                width: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game">
+        <div id="main">
+            <div class="prompt">
+                <div class="left">
+                    <div class="array"></div>
+                    <div class="array"></div>
+                    <div class="array"></div>
+                </div>
+                <div class="right">
+                    <div class="array"></div>
+                    <div class="array"></div>
+                    <div class="array"></div>
+                </div>
+            </div>
+            <div class="items">
+                <!-- <div class="item">
+                        <img src="./img/g_red.png" alt="">
+                        <div class="text">0</div>
+                    </div>
+                    <div class="item">
+                        <img src="./img/g_red2.png" alt="">
+                        <div class="text">0</div>
+                    </div>
+                    <div class="item">
+                        <img src="./img/g_fire.png" alt="">
+                        <div class="text">0</div>
+                    </div> -->
+            </div>
+            <div class="role">
+                <p class="text"></p>
+            </div>
+            <div class="interface">
+                <div class="star">
+                    <!-- <img src="./img/g_star.png" alt=""> -->
+                </div>
+                <div class="texts">
+                    <div class="allScore">
+                        <h4 class="text">0</h4>
+                    </div>
+                    <div class="time">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="home">
+                <div class="logo">
+                    <!-- <img src="./img/g_fnlogo.png" alt=""> -->
+                </div>
+                <div class="button">
+                    <!-- <img src="./img/g_fnbutton.png" alt=""> -->
+                </div>
+            </div>
+            <div class="cover">
+                <div class="load">
+                    <div class="number">
+                        <div class="flex">
+                            <h2>0</h2>
+                            <h5>%</h5>
+                        </div>
+                    </div>
+                    <div class="title">
+                        <h3>LOADING</h3>
+                    </div>
+                </div>
+                <div class="start">
+                    <!-- <div class="title">
+                        <h3>Game Star</h3>
+                    </div> -->
+                    <div class="number">
+                        <h2>3</h2>
+                    </div>
+                </div>
+                <div class="over">
+                    <!-- <div class="title">
+                        <h3>Game Over</h3>
+                    </div> -->
+                    <div class="scoring">
+                        <h5>總分</h5>
+                        <div class="flex">
+                            <h2>0</h2>
+                            <h5>分</h5>
+                        </div>
+                    </div>
+                    <a class="home_btn btn" href="index.html">
+                        <!-- <img src="./img/g_homebutton.png" alt=""> -->
+                    </a>
+                    <a class="ranking btn">
+                        <!-- <img src="./img/g_rankingbutton.png" alt=""> -->
+                    </a>
+                </div>
+            </div>
+            <div class="effects"></div>
+            <audio class='audioBg' src="source/bg.mp3" loop="loop"></audio>
+            <audio class='audioDie' src="source/die.mp3"></audio>
+            <audio class='audioEat' src="source/eat.mp3"></audio>
+            <audio class='audioFire' src="source/fire.mp3"></audio>
+        </div>
+    </div>
+    <script>
+        var Game = function() {
+            this.main = document.getElementById("main");
+            this.prompt = this.main.querySelector(".prompt");
+            this.home = this.main.querySelector(".home");
+            this.fnButton = this.home.querySelector(".button");
+            this.interface = this.main.querySelector(".interface");
+            this.star = this.interface.querySelector(".star");
+            this.scoreText = this.main.querySelector(".allScore>.text");
+            this.timeBar = this.main.querySelector(".bar");
+            this.items = this.main.querySelector(".items");
+            this.cover = this.main.querySelector(".cover");
+            this.load = this.cover.querySelector(".load");
+            this.loadNumber = this.load.querySelector(".number h2");
+            this.start = this.cover.querySelector(".start");
+            this.startNumber = this.start.querySelector(".number>h2");
+            this.over = this.cover.querySelector(".over");
+            this.overNumber = this.over.querySelector(".scoring h2");
+            this.effects = this.main.querySelector('.effects');
+            this.hiddenBtn = this.main.querySelector('#hiddenBtn');
+            this.roleObj = this.main.querySelector(".role");
+            this.roleText = this.roleObj.querySelector(".text");
+            this.logo = this.main.querySelector(".logo");
+            this.homeBtn = this.main.querySelector(".home_btn");
+            this.ranking = this.main.querySelector(".ranking");
+            this.audioBg = this.main.querySelector(".audioBg");
+            this.audioDie = this.main.querySelector(".audioDie");
+            this.audioEat = this.main.querySelector(".audioEat");
+            this.audioFire = this.main.querySelector(".audioFire");
+            this.ww = window.innerWidth;
+            this.wh = window.innerHeight;
+            //幾針
+            this.frameNumber = 0;
+            //遊戲時間
+            this.gameTime = 20;
+            this.gameTimeV = this.gameTime;
+            //倒數時間
+            this.lastTime = 8;
+            //一般紅包出現次數
+            this.redShow = 20;
+            //特殊紅包出現次數
+            this.redShow2 = 1;
+            //一般紅包得分
+            this.generalScore = 10;
+            //特殊紅包得分
+            this.specialScore = 20;
+            //img
+            this.img = {
+                'red': 'https://i.imgur.com/jnlW9YP.png',
+                'red2': 'https://i.imgur.com/5Umb09Y.png',
+                'fire': 'https://i.imgur.com/pBrpeyY.png',
+                // 'role': './img/g_role.png',
+                // 'mainBg': './img/g_bg.png',
+                // 'over': './img/g_score.png',
+                'star': 'https://i.imgur.com/4d01f3U.png',
+                'logo': 'https://i.imgur.com/QiItL8l.png',
+                'fnButton': 'https://i.imgur.com/Yd1rlGm.png',
+                'homeBtn': 'https://i.imgur.com/OdnePjL.png',
+                'ranking': 'https://i.imgur.com/z6Wm1id.png',
+            };
+            this.imgs = {};
+            //score
+            this.score = 0;
+            //role
+            this.roleState = 's';
+            this.roleImgNumber = 0;
+            this.standbyArray = [0, 2];
+            this.eatArray = [1, 1];
+            this.leftArray = [4, 4];
+            this.rightArray = [3, 3];
+            this.bubbleArray = [5, 6, 6];
+            //move
+            this.startX = 0;
+            this.startX2 = 0;
+            this.nowClientX = 0;
+            //吃到炮竹不能控制
+            this.control = true;
+            //吃到炮竹不能控制時間(s)
+            this.controlTime = 1;
+            //按鍵Key
+            this.keys = [];
+            //down
+            this.downArray = [];
+            this.downW = this.ww < 600 ? 55 : 110;
+            this.downH = this.ww < 600 ? 75 : 120;
+            //下落速度
+            this.downV = 5;
+            //下落時間
+            this.downTime = 50;
+            //最後5秒下落時間
+            this.lastdownTime = 20;
+            //loadImg
+            this.loadImg();
+        }
+        Game.prototype.loadImg = function(callback) {
+            var number = 0;
+            var imgLength = Object.keys(this.img).length;
+            for (var k in this.img) {
+                this.imgs[k] = new Image();
+                this.imgs[k].src = this.img[k];
+                this.imgs[k].onload = function() {
+                    number++;
+                    this.loadNumber.innerHTML = parseInt((number / imgLength) * 100) - 1;
+                    if (number == imgLength) {
+                        //load page
+                        this.load.style.display = 'none';
+                        this.controlfn();
+
+                        //img
+                        this.star.appendChild(this.imgs.star)
+                        this.logo.appendChild(this.imgs.logo)
+                        this.fnButton.appendChild(this.imgs.fnButton)
+                        this.homeBtn.appendChild(this.imgs.homeBtn)
+                        this.ranking.appendChild(this.imgs.ranking)
+
+                        //1.
+                        this.cover.style.display = 'none';
+                        this.home.classList.add('active');
+
+
+                        //2.
+                        // this.start.style.display = 'block';
+                        //role
+                        // this.roleW = this.roleObj.offsetWidth;
+                        // this.roleH = this.roleObj.offsetHeight;
+                        // this.roleX = (this.ww - this.roleW) / 2;
+                        // this.roleY = this.wh - this.roleH - 10;
+                        // this.roleObj.style.left = this.roleX + 'px';
+                        // this.roleObj.style.top = this.roleY + 'px';
+                        // this.init();
+                    }
+                }.bind(this)
+            }
+
+        }
+        Game.prototype.init = function() {
+            //分數歸零
+            this.score.innerHTML = 0;
+            // var _this = this;
+            var number = '3'; //倒數秒數
+            var startTimer = setInterval(() => {
+                if (number > 1) {
+                    number--;
+                    this.startNumber.innerHTML = number;
+                } else {
+                    clearInterval(startTimer);
+                    this.prompt.style.display = 'block';
+                    this.cover.style.display = 'none';
+                    this.start.style.display = 'none';
+                    //interface
+                    this.interface.style.opacity = '1';
+                    this.startGame();
+                }
+            }, 1000);
+        }
+        Game.prototype.startGame = function() {
+            var startTimer = setInterval(function() {
+                //角色動畫
+                if (this.frameNumber % 18 == 0) {
+                    this.roleRender();
+                }
+
+                //生成下落物 
+                if (this.frameNumber % this.downTime == 0) {
+                    this.downfn();
+                }
+
+                //更新下落物位置
+                this.downArray.forEach((v, i) => {
+                    v.y += this.downV + v.yv;
+                    v.el.style.width = this.downW + 'px';
+                    v.el.style.height = this.downH + 'px';
+                    v.el.style.left = v.x + 'px';
+                    v.el.style.top = v.y + 'px';
+                    v.el.style.transform = 'rotate(' + v.r + 'deg)';
+                    //刪除超過框外
+                    if (v.y > this.wh) {
+                        // console.log(v.el)
+                        this.downDelet(i);
+                    }
+                })
+
+                //遊戲時間
+                if (this.frameNumber % 50 == 0) {
+                    if (this.gameTime > 0) {
+                        this.gameTime--;
+                        console.log('目前遊戲時間:' + this.gameTime + 's');
+                        // console.log((((100 - 20) / this.gameTimeV) * this.gameTime) + 20);
+                        this.timeBar.style.width = (((100 - 20) / this.gameTimeV) * this.gameTime) + 20 + '%'; //100-20%
+                        //倒數
+                        if (this.gameTime < this.lastTime) {
+                            this.effects.style.display = 'block';
+                            // this.downV = this.lastdownV;
+                            this.downTime = this.lastdownTime;
+                        }
+                    } else {
+                        this.audioBg.pause();
+                        this.audioDie.play();
+                        clearInterval(startTimer);
+                        this.endGame();
+                    }
+                }
+
+                //晃動動畫
+                if (!this.control) {
+                    this.main.style.transform = "translate(" + parseInt(3 - (Math.random() * 6)) + "px," + parseInt(2 - (Math.random() * 4)) + "px) rotate(" + parseInt(1 - (Math.random() * 2)) + "deg)";
+                } else {
+                    this.main.style = '';
+                }
+
+                //碰撞
+                this.downArray.forEach((v, i) => {
+                    // console.log('--------' + v.n + '-----------')
+                    var inRangeX = this.roleX + this.roleW > v.x && this.roleX < v.x + this.downW;
+                    var inRangeY = this.roleY < v.y + this.downH;
+                    // console.log(inRangeX)
+                    // console.log(inRangeY)
+                    if (inRangeX && inRangeY && this.control) {
+                        if (v.n == '2') {
+                            this.audioFire.currentTime = 0;
+                            this.audioFire.play();
+                            //煙火
+                            this.roleState = 'b';
+                            this.roleRender(0);
+                            this.control = false;
+                            var time = setTimeout(() => {
+                                this.control = true;
+                                this.roleState = 's';
+                                this.roleRender(0);
+                                clearInterval(time);
+                            }, 1000 * this.controlTime)
+                        } else {
+                            this.audioEat.currentTime = 0;
+                            this.audioEat.play();
+                            var score = 0;
+                            if (v.n == '0') {
+                                score = this.generalScore;
+                            }
+                            if (v.n == '1') {
+                                score = this.specialScore;
+                            }
+                            this.score += score;
+                            this.roleState = 'e';
+                            this.roleRender(0);
+                            this.roleText.innerHTML = '+' + score;
+                            this.roleText.style.display = 'block';
+                        }
+                        this.downDelet(i);
+                        this.scoreText.innerHTML = this.score
+                    }
+                })
+
+                //右移動
+                if (this.keys["65"] || this.keys["37"] && this.control) {
+                    this.roleState = 'l';
+                    this.roleRender(0);
+                    this.roleMove(8)
+                }
+
+                //左移動
+                if (this.keys["68"] || this.keys["39"] && this.control) {
+                    this.roleState = 'r';
+                    this.roleRender(0);
+                    this.roleMove(-8)
+                }
+
+                this.frameNumber++;
+            }.bind(this), 20);
+        }
+        Game.prototype.downfn = function(i) {
+            if (this.redShow * 1 + this.redShow2 * 1) {
+                var rand = parseInt(Math.random() * 3) //0-3
+                var img = null;
+                if (rand == 0) {
+                    if (this.redShow) {
+                        this.redShow--;
+                        img = this.imgs.red
+                    }
+                } else if (rand == 1) {
+                    if (this.redShow2) {
+                        this.redShow2--;
+                        img = this.imgs.red2
+                    }
+                } else if (rand == 2) {
+                    // console.log('->煙火')
+                    img = this.imgs.fire
+                }
+                console.log('--------總共剩下多少紅包--------- ' + (this.redShow * 1 + this.redShow2 * 1))
+                console.log('->紅包還剩幾個: ' + this.redShow)
+                console.log('->特殊紅包還剩幾個: ' + this.redShow2)
+                if (img) {
+                    var item = document.createElement('div');
+                    item.setAttribute('class', 'item');
+                    item.appendChild(img.cloneNode(true));
+                    this.items.appendChild(item);
+                    var yv = parseInt(Math.random() * 5);
+                    if (this.gameTime < this.lastTime) {
+                        yv += 20;
+                    }
+                    var downWHalf = this.downW / 2;
+                    var random = parseInt(Math.random() * Math.round((this.ww - this.downW) / downWHalf));
+                    this.downArray.push({
+                        // x: parseInt(Math.random() * (this.ww - this.downW)),
+                        x: random * downWHalf,
+                        y: -this.downH,
+                        yv: yv,
+                        n: rand,
+                        el: item,
+                        // r:-30~30
+                        r: parseInt(30 - (Math.random() * 60))
+                    });
+                } else {
+                    this.downfn()
+                }
+            }
+        }
+        Game.prototype.downDelet = function(i) {
+            this.downArray[i].el.remove();
+            this.downArray.splice(i, 1);
+        }
+        Game.prototype.roleRender = function(i) {
+            //第幾張圖片
+            var bp = 0;
+            var length = 0;
+            //新動畫
+            if (i == 0) {
+                this.roleImgNumber = 0;
+            }
+            //角色狀態
+            if (this.roleState == 's') {
+                length = this.standbyArray.length;
+                bp = this.standbyArray[this.roleImgNumber];
+            }
+            if (this.roleState == 'e') {
+                length = this.eatArray.length
+                bp = this.eatArray[this.roleImgNumber];
+            }
+            if (this.roleState == 'b') {
+                //0,1,2,3,4
+                length = this.bubbleArray.length
+                bp = this.bubbleArray[this.roleImgNumber];
+                // console.log('bp->' + bp);
+                // console.log('roleState------------->' + this.roleState);
+                // console.log('roleImgNumber->' + this.roleImgNumber);
+                // console.log('length-1->' + length);
+            }
+            if (this.roleState == 'l') {
+                length = this.leftArray.length
+                bp = this.leftArray[this.roleImgNumber];
+            }
+            if (this.roleState == 'r') {
+                length = this.rightArray.length
+                bp = this.rightArray[this.roleImgNumber];
+            }
+
+
+            //動畫執行完回待機狀態
+            if (this.roleImgNumber == length - 1) {
+                this.roleText.style.display = 'none';
+                //炮竹停在最後一格
+                if (!this.control) return;
+                //規零
+                this.roleImgNumber = -1;
+                if (this.roleState == 's' || this.roleState == 'e') {
+                    this.roleState = 's';
+                }
+            }
+
+            this.roleObj.style.backgroundPosition = -bp * this.roleObj.offsetWidth + 'px 0px';
+            this.roleImgNumber++; //0,1,2,3
+        }
+        Game.prototype.roleMove = function(v) {
+            //限制位置
+            var leftValue = this.roleObj.offsetLeft - v;
+            if (leftValue < 0) {
+                leftValue = 0
+            }
+            if (leftValue > this.ww - this.roleW) {
+                leftValue = this.ww - this.roleW
+            }
+            this.roleX = leftValue;
+            this.roleObj.style.left = leftValue + 'px';
+        }
+        Game.prototype.controlfn = function() {
+            this.roleObj.addEventListener('mousedown', this.startFn.bind(this));
+            this.roleObj.addEventListener('touchstart', this.startFn.bind(this));
+            document.addEventListener("keydown", function(e) {
+                this.prompt.style.display = 'none';
+                this.keys[e.keyCode] = true;
+            }.bind(this));
+            document.addEventListener("keyup", function(e) {
+                this.keys[e.keyCode] = false;
+            }.bind(this));
+
+
+            this.fnButton.addEventListener('click', function() {
+                this.home.style.display = 'none';
+                this.prompt.style.display = 'block';
+                //role
+                this.roleW = this.roleObj.offsetWidth;
+                this.roleH = this.roleObj.offsetHeight;
+                this.roleX = (this.ww - this.roleW) / 2;
+                this.roleY = this.wh - this.roleH - 10;
+                this.roleObj.style.left = this.roleX + 'px';
+                this.roleObj.style.top = this.roleY + 'px';
+                //interface
+                this.interface.style.opacity = '1';
+                this.startGame();
+                this.audioBg.play();
+            }.bind(this))
+        }
+        Game.prototype.startFn = function(e) {
+            this.audioBg.play();
+            this.prompt.style.display = 'none';
+            if (!this.control) return;
+            e = e || window.event;
+            e.preventDefault();
+            // console.log('start')
+            if (e.type == 'touchstart') {
+                this.startX = e.touches[0].clientX;
+                document.ontouchmove = this.move.bind(this);
+                document.ontouchend = this.end.bind(this);
+            } else {
+                // console.log(this)
+                this.startX = e.clientX;
+                document.onmousemove = this.move.bind(this);
+                document.onmouseup = this.end.bind(this);
+            }
+        }
+        Game.prototype.move = function(e) {
+            if (!this.control) return;
+            // console.log('move')
+            e = e || window.event;
+            this.nowClientX = e.type == 'touchmove' ? e.touches[0].clientX : e.clientX;
+
+            //動作
+            if (this.nowClientX > this.startX) {
+                this.roleState = 'r';
+                this.roleRender(0);
+                // console.log('r')
+            } else {
+                // console.log('l')
+                this.roleState = 'l';
+                this.roleRender(0);
+            }
+
+            //移動
+            this.startX2 = this.startX - this.nowClientX;
+            this.roleMove(this.startX2);
+            this.startX = this.nowClientX;
+        }
+        Game.prototype.end = function() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+            document.ontouchend = null;
+            document.ontouchmove = null;
+            if (!this.control) return;
+            this.roleState = 's';
+            this.roleRender(0);
+        }
+        Game.prototype.endGame = function() {
+            this.timeBar.style.width = '0%';
+            this.cover.style.display = 'flex';
+            this.over.style.display = 'block';
+            this.effects.style.display = 'none';
+            this.overNumber.innerHTML = this.score;
+            this.control = false;
+            this.end();
+            this.main.style = '';
+            this.prompt.style = 'none';
+        }
+        var game = new Game()
+    </script>
+</body>
+
+</html>
