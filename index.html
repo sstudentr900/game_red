@@ -34,7 +34,7 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background: url(https://i.imgur.com/Sm8smA4.jpg);
+            background: url(./img/g_bg.svg);
             background-position: top;
             background-repeat: no-repeat;
             background-size: cover;
@@ -43,7 +43,7 @@
         
         @media (min-width: 1200px) {
             #main {
-                background: url(https://i.imgur.com/Sm8smA4.jpg);
+                background: url(./img/g_bg.svg);
                 background-repeat: repeat-x;
                 background-size: contain;
                 background-position: center;
@@ -108,11 +108,6 @@
             margin-top: 60px;
         }
         
-        .cover .btn img {
-            width: 100%;
-            height: auto;
-        }
-        
         .load h3 {
             font-size: 32px;
         }
@@ -127,9 +122,8 @@
         }
         
         .over {
-            background: url('https://i.imgur.com/t0gq4RT.png');
+            background: url('./img/g_score.svg');
             background-repeat: no-repeat;
-            background-size: contain;
             padding: 190px 110px 0;
             margin-top: -8%;
         }
@@ -166,11 +160,6 @@
             background: #fff;
             z-index: 1;
             /* position: absolute; */
-        }
-        
-        .interface .star img {
-            width: 100%;
-            height: auto;
         }
         
         .interface .allScore {
@@ -234,7 +223,7 @@
             position: absolute;
             width: 252px;
             height: 252px;
-            background: url('https://i.imgur.com/AsWTbEJ.png');
+            background: url('./img/g_role.svg');
             background-repeat: no-repeat;
             /* background-size: 1260px 180px; */
             background-size: 1764px 252px;
@@ -430,15 +419,15 @@
             </div>
             <div class="items">
                 <!-- <div class="item">
-                        <img src="./img/g_red.png" alt="">
+                        <img src="./img/g_red.svg" alt="">
                         <div class="text">0</div>
                     </div>
                     <div class="item">
-                        <img src="./img/g_red2.png" alt="">
+                        <img src="./img/g_red2.svg" alt="">
                         <div class="text">0</div>
                     </div>
                     <div class="item">
-                        <img src="./img/g_fire.png" alt="">
+                        <img src="./img/g_fire.svg" alt="">
                         <div class="text">0</div>
                     </div> -->
             </div>
@@ -447,7 +436,7 @@
             </div>
             <div class="interface">
                 <div class="star">
-                    <!-- <img src="./img/g_star.png" alt=""> -->
+                    <!-- <img src="./img/g_star.svg" alt=""> -->
                 </div>
                 <div class="texts">
                     <div class="allScore">
@@ -460,10 +449,10 @@
             </div>
             <div class="home">
                 <div class="logo">
-                    <!-- <img src="./img/g_fnlogo.png" alt=""> -->
+                    <!-- <img src="./img/g_fnlogo.svg" alt=""> -->
                 </div>
                 <div class="button">
-                    <!-- <img src="./img/g_fnbutton.png" alt=""> -->
+                    <!-- <img src="./img/g_fnbutton.svg" alt=""> -->
                 </div>
             </div>
             <div class="cover">
@@ -497,11 +486,11 @@
                             <h5>分</h5>
                         </div>
                     </div>
-                    <a class="home_btn btn" href="index.html">
-                        <!-- <img src="./img/g_homebutton.png" alt=""> -->
+                    <a class="home_btn btn" href="./">
+                        <!-- <img src="./img/g_homebutton.svg" alt=""> -->
                     </a>
                     <a class="ranking btn">
-                        <!-- <img src="./img/g_rankingbutton.png" alt=""> -->
+                        <!-- <img src="./img/g_rankingbutton.svg" alt=""> -->
                     </a>
                 </div>
             </div>
@@ -560,17 +549,17 @@
             this.specialScore = 20;
             //img
             this.img = {
-                'red': 'https://i.imgur.com/jnlW9YP.png',
-                'red2': 'https://i.imgur.com/5Umb09Y.png',
-                'fire': 'https://i.imgur.com/pBrpeyY.png',
-                // 'role': './img/g_role.png',
-                // 'mainBg': './img/g_bg.png',
-                // 'over': './img/g_score.png',
-                'star': 'https://i.imgur.com/4d01f3U.png',
-                'logo': 'https://i.imgur.com/QiItL8l.png',
-                'fnButton': 'https://i.imgur.com/Yd1rlGm.png',
-                'homeBtn': 'https://i.imgur.com/OdnePjL.png',
-                'ranking': 'https://i.imgur.com/z6Wm1id.png',
+                'red': './img/g_red.svg',
+                'red2': './img/g_red2.svg',
+                'fire': './img/g_fire.svg',
+                // 'role': './img/g_role.svg',
+                // 'mainBg': './img/g_bg.svg',
+                // 'over': './img/g_score.svg',
+                'star': './img/g_star.svg',
+                'logo': './img/g_fnlogo.svg',
+                'fnButton': './img/g_fnbutton.svg',
+                'homeBtn': './img/g_homebutton.svg',
+                'ranking': './img/g_rankingbutton.svg',
             };
             this.imgs = {};
             //score
